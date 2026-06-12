@@ -3,60 +3,56 @@
 
 % Ubah bagian-bagian berikut dengan isi dari pendahuluan
 
-Penelitian ini dilatarbelakangi oleh \lipsum[1][1-5]
+Penelitian ini dilatarbelakangi oleh pentingnya diagnosis cepat dan akurat terhadap penyakit konjungtivitis untuk mencegah penularan yang lebih luas di masyarakat.
 
 \section{Latar Belakang}
 \label{sec:latar-belakang}
 
-Pesatnya perkembangan roket yang merupakan \lipsum[1]
+Konjungtivitis adalah penyakit mata menular yang ditandai dengan inflamasi pada membran transparan (konjungtiva) yang melapisi kelopak mata dan bagian luar sklera. Deteksi dini konjungtivitis sangat penting dilakukan karena tingkat penularannya yang tinggi, terutama pada tipe virus dan bakteri, guna mencegah wabah yang lebih luas di lingkungan sosial seperti sekolah dan tempat kerja. Saat ini, diagnosis klinis penyakit ini sebagian besar bergantung pada inspeksi visual langsung oleh dokter spesialis mata (oftalmolog). Namun, proses diagnosis manual ini memiliki keterbatasan yang signifikan, antara lain bersifat subjektif, memerlukan waktu yang lama, serta terbatasnya aksesibilitas dokter spesialis mata di daerah terpencil atau fasilitas kesehatan tingkat pertama yang minim peralatan medis.
 
-\lipsum[2]
+Untuk mengatasi masalah tersebut, teknologi kecerdasan buatan berbasis \textit{deep learning}, khususnya \textit{Convolutional Neural Network} (CNN), telah banyak dikembangkan untuk menganalisis citra medis mata. Model CNN standar seperti Xception \parencite{ali2025automated} atau ResNet50 \parencite{sangeethaa2024enhanced} terbukti mampu melakukan ekstraksi fitur secara otomatis dari citra digital tanpa memerlukan pemrosesan manual yang rumit. Namun demikian, pendekatan klasifikasi secara global (\textit{global classification}) langsung dari citra mata utuh memiliki kelemahan yang fatal. Sebagaimana dilaporkan oleh \textcite{sangeethaa2024enhanced} dan \textcite{jiang2023automatic}, jika gambar mata utuh langsung dimasukkan ke CNN, model seringkali mengalami bias atau salah fokus karena mengekstraksi fitur dari area non-infeksi (seperti bulu mata, kelopak mata, pupil, atau \textit{specular reflection} akibat air mata), sehingga menurunkan performa akurasi deteksi secara signifikan.
+
+Pada kenyataannya, gejala klinis konjungtivitis yang paling mencolok dan relevan adalah adanya pelebaran pembuluh darah (\textit{vascular congestion}) atau hiperemia yang terjadi secara spesifik pada bagian selaput putih mata atau sklera \parencite{madhusudhan2026deep}. Oleh karena itu, melakukan segmentasi pada area sklera untuk memotong (\textit{cropping}) objek utama dan membuang bagian wajah atau mata lainnya yang tidak relevan sangat krusial dilakukan sebelum citra dimasukkan ke dalam jaringan klasifikasi. Proses pengolahan citra tambahan untuk memperkuat atau mengamplifikasi fitur vaskular pembuluh darah merah di atas area sklera tersebut juga penting agar model \textit{deep learning} dapat mendeteksi intensitas kemerahan pembuluh darah dengan lebih akurat.
+
+Berdasarkan permasalahan tersebut, penelitian ini mengusulkan sebuah arsitektur deteksi konjungtivitis otomatis yang menggabungkan metode segmentasi sklera, peningkatan kualitas fitur vaskular, dan arsitektur \textit{Attention-driven CNN}. Penggunaan mekanisme \textit{attention} \parencite{sangeethaa2024enhanced,jiang2023automatic} diintegrasikan untuk memaksa jaringan CNN berfokus secara eksklusif pada area pembuluh darah sklera yang mengalami peradangan. Selain itu, mengingat dataset publik yang tersedia memiliki karakteristik ketidakseimbangan kelas (\textit{imbalanced dataset}), penelitian ini juga menerapkan teknik \textit{data augmentation} dan penanganan \textit{imbalanced learning} guna melatih model klasifikasi yang adil dan kuat terhadap bias kelas mayoritas.
 
 \section{Rumusan Masalah}
 \label{sec:rumusan-masalah}
 
-Dari permasalahan tersebut maka \lipsum[1][1-6]
+Rumusan masalah yang dibahas dalam penelitian ini adalah sebagai berikut:
+\begin{enumerate}[itemsep=1pt]
+  \item Bagaimana cara melakukan segmentasi area sklera secara otomatis serta mengekstraksi fitur vaskular pembuluh darah pada citra mata?
+  \item Bagaimana merancang arsitektur \textit{Attention-driven CNN} yang optimal untuk mengklasifikasi citra sklera yang telah disegmentasi menjadi kelas Normal atau Konjungtivitis?
+  \item Bagaimana performa model yang dirancang dalam menangani ketidakseimbangan dataset citra mata (\textit{imbalanced}) untuk mendeteksi konjungtivitis?
+\end{enumerate}
 
 \section{Batasan Masalah}
 \label{sec:batasan-masalah}
 
-Untuk membatasi ruang lingkup penelitian, maka \lipsum[1][1-4]
-dibatasi pada:
+Untuk membatasi ruang lingkup penelitian, batasan masalah yang ditetapkan adalah:
 \begin{enumerate}[itemsep=1pt]
-
-  \item Studi literatur mengenai \lipsum[2]
-
-  \item Perancangan dan implementasi \lipsum[3]
-
-  \item Pengujian kinerja sistem pada \lipsum[4]
-  
+  \item Dataset citra mata yang digunakan diperoleh secara publik dari platform Kaggle dengan jumlah 1.357 citra (terdiri dari 986 citra kelas Normal dan 371 citra kelas Konjungtivitis).
+  \item Ruang lingkup deteksi dibatasi pada klasifikasi biner (\textit{binary classification}) untuk membedakan antara kondisi mata Normal dan mata yang terinfeksi Konjungtivitis.
+  \item Fokus prapemrosesan citra adalah melakukan segmentasi area sklera dan ekstraksi visual pembuluh darah menggunakan teknik visualisasi hiperemia.
 \end{enumerate}
 
 \section{Tujuan}
 \label{sec:tujuan}
 
-Tujuan dari \lipsum[1][1-3] adalah:
-
+Tujuan dari penelitian Tugas Akhir ini adalah:
 \begin{enumerate}[nolistsep]
-
-  \item Membuat \lipsum[2][1-3]
-
-  \item \lipsum[3][1-3]
-
+  \item Mengembangkan metode prapemrosesan otomatis untuk segmentasi sklera dan ekstraksi fitur vaskular guna meminimalkan \textit{noise} non-okular.
+  \item Merancang dan mengimplementasikan model \textit{Attention-driven CNN} berbasis arsitektur \textit{residual} yang sensitif terhadap pola hiperemia pada sklera.
+  \item Menganalisis performa arsitektur usulan dalam mengatasi ketidakseimbangan kelas (\textit{class imbalance}) berdasarkan metrik klasifikasi seperti \textit{F1-Score} dan akurasi.
 \end{enumerate}
 
 \section{Manfaat}
 \label{sec:manfaat}
 
-Manfaat dari \lipsum[1][1-3] adalah:
-
+Manfaat dari penelitian ini adalah:
 \begin{enumerate}[nolistsep]
-
-  \item Mempermudah \lipsum[2][1-3]
-
-  \item \lipsum[3][1-5]
-
-  \item \lipsum[4][1-5]
-
+  \item Bagi dunia akademisi, memberikan kontribusi berupa studi integrasi segmentasi sklera dan mekanisme \textit{attention} untuk mendeteksi konjungtivitis dengan sensitivitas tinggi.
+  \item Bagi masyarakat dan praktisi kesehatan di daerah terpencil, dapat dikembangkan lebih lanjut menjadi alat bantu skrining awal (\textit{triage}) otomatis konjungtivitis tanpa ketergantungan penuh pada kehadiran dokter spesialis secara fisik.
+  \item Mengurangi potensi transmisi lokal penyakit konjungtivitis melalui penyediaan deteksi dini yang lebih cepat.
 \end{enumerate}
 

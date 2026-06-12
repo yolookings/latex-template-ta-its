@@ -3,62 +3,97 @@
 
 % Ubah bagian-bagian berikut dengan isi dari metodologi
 
-Penelitian ini dilaksanakan sesuai \lipsum[1][1-5]
+Penelitian ini dilaksanakan sesuai dengan metodologi yang terstruktur dan sistematis untuk memecahkan masalah deteksi konjungtivitis pada citra mata yang memiliki derau (\textit{noise}) dan ketidakseimbangan kelas.
 
-\section{Deskripsi Sistem}
-\label{sec:deskripsi-sistem}
+\section{Alur Penelitian}
+\label{sec:alur-penelitian}
 
-Sistem akan dibuat dengan \lipsum[1-2]
+Alur pengerjaan penelitian ini dirancang melalui tahapan terintegrasi yang digambarkan sebagai berikut:
+\begin{enumerate}
+  \item \textbf{Pengumpulan Dataset}: Mengambil dataset publik konjungtivitis dari Kaggle.
+  \item \textbf{Pembagian Dataset}: Memisahkan data menjadi subset latih dan uji secara proporsional.
+  \item \textbf{Prapemrosesan Citra}: Melakukan segmentasi sklera dan memperjelas pembuluh darah dengan CLAHE.
+  \item \textbf{Augmentasi Data}: Menyeimbangkan sebaran kelas minoritas pada data latih.
+  \item \textbf{Perancangan dan Pelatihan Model}: Membangun arsitektur \textit{Attention-driven CNN} berbasis ResNet50.
+  \item \textbf{Evaluasi Model}: Menganalisis hasil pengujian dengan metrik klasifikasi data tidak seimbang.
+\end{enumerate}
 
-\section{Implementasi Alat}
-\label{sec:implementasi-alat}
+\section{Pengumpulan dan Pembagian Dataset}
+\label{sec:pengumpulan-dataset}
 
-Alat diimplementasikan dengan \lipsum[1]
+Dataset citra mata untuk deteksi konjungtivitis diperoleh secara publik dari platform Kaggle. Dataset ini memiliki karakteristik tidak seimbang (\textit{imbalanced}), dengan distribusi total sebanyak 1.357 citra yang terdiri dari:
+\begin{itemize}
+  \item Kelas \textbf{Normal}: 986 citra.
+  \item Kelas \textbf{Konjungtivitis}: 371 citra.
+\end{itemize}
 
-% Contoh pembuatan potongan kode
-\begin{lstlisting}[
-  language=C++,
-  caption={Program halo dunia.},
-  label={lst:halodunia}
-]
-#include <iostream>
+Untuk melatih dan menguji model secara adil, dataset dibagi menjadi data latih (\textit{training set}) sebesar 80\% dan data uji (\textit{testing set}) sebesar 20\% menggunakan metode \textit{Stratified Split}. Penggunaan \textit{Stratified Split} menjamin bahwa rasio kelas Normal (72,6\%) dan kelas Konjungtivitis (27,4\%) tetap sama baik pada data latih maupun data uji, sehingga mencegah bias evaluasi.
 
-int main() {
-    std::cout << "Halo Dunia!";
-    return 0;
-}
-\end{lstlisting}
+\section{Prapemrosesan dan Augmentasi Data}
+\label{sec:prapemrosesan-dan-augmentasi}
 
-\lipsum[2-3]
+\subsection{Segmentasi Sklera dan Fitur Vaskular}
+\label{subsec:segmentasi-sklera-vaskular}
 
-% Contoh input potongan kode dari file
+Proses prapemrosesan citra dilakukan untuk menghilangkan pengaruh derau non-okular dan mempertegas tanda-tanda inflamasi. Tahapan pemrosesan adalah sebagai berikut:
+\begin{enumerate}
+  \item \textbf{Segmentasi Sklera}: Area putih mata (sklera) diisolasi dengan mengonversi citra ke ruang warna HSV dan menerapkan ambang batas (\textit{color thresholding}) warna putih sklera. Derau kelopak mata, bulu mata, dan pupil dibuang menggunakan deteksi kontur dan operasi morfologi (\textit{opening} dan \textit{closing}), dilanjutkan dengan pemotongan (\textit{cropping}) area sklera.
+  \item \textbf{Ekstraksi Fitur Vaskular}: Citra sklera yang telah terpotong dikonversi untuk memperkuat kanal merah pembuluh darah melalui formulasi indeks kemerahan. Selanjutnya, algoritma \textit{Contrast Limited Adaptive Histogram Equalization} (CLAHE) diterapkan untuk menonjolkan urat-urat merah pembuluh darah yang mengalami pembengkakan dengan meratakan kontras lokal secara adaptif.
+\end{enumerate}
+
+\subsection{Augmentasi Data Latih}
+\label{subsec:augmentasi-data-latih}
+
+Untuk mengatasi bias kelas mayoritas (Normal) akibat ketidakseimbangan data, dilakukan teknik augmentasi data (\textit{data augmentation}) secara dinamis khusus pada kelas Konjungtivitis di subset latih. Augmentasi yang diterapkan meliputi:
+\begin{itemize}
+  \item Rotasi acak (\textit{random rotation}) dalam rentang $\pm 15$ derajat.
+  \item Pembalikan horizontal (\textit{horizontal flip}) secara acak.
+  \item Pengaturan kecerahan (\textit{brightness adjustment}) secara acak antara 0.8 hingga 1.2.
+  \item Pergeseran lebar dan tinggi (\textit{width and height shift}) sebesar 10\%.
+\end{itemize}
+Dengan augmentasi ini, jumlah citra kelas minoritas seolah-olah seimbang selama proses pelatihan.
+
+\section{Perancangan Model Klasifikasi}
+\label{sec:perancangan-model}
+
+Arsitektur model yang dirancang adalah \textit{Attention-driven CNN} dengan menggunakan ResNet50 yang telah terlatih pada ImageNet sebagai \textit{backbone} ekstraktor fitur dasar. Peta fitur (\textit{feature maps}) yang dihasilkan oleh blok konvolusi terakhir ResNet50 dialirkan ke dalam blok \textit{Spatial Attention Mechanism} untuk menghitung peta perhatian spasial. Blok perhatian ini memberikan bobot piksel yang lebih tinggi pada area yang menunjukkan vaskularisasi/urat merah, dan menekan area sklera yang bersih. Struktur implementasi model diilustrasikan pada Kode Program \ref{lst:attentioncnn}.
+
 \lstinputlisting[
   language=Python,
-  caption={Program perhitungan bilangan prima.},
-  label={lst:bilanganprima}
-]{program/bilangan-prima.py}
+  caption={Implementasi model Attention-driven CNN berbasis ResNet50 dan Spatial Attention.},
+  label={lst:attentioncnn}
+]{program/attention-cnn.py}
 
-\section{Skenario Eksperimen dan Baseline}
-\label{subsec:skenario-eksperimen}
+\section{Evaluasi Model dan Skenario Eksperimen}
+\label{sec:evaluasi-model}
 
-Untuk memvalidasi metrik di atas, sistem usulan dibandingkan dengan \textit{baseline} standar industri sebagaimana dirangkum dalam Tabel \ref{tab:skenario-baseline}.
+Karena dataset yang digunakan bersifat \textit{imbalanced}, evaluasi kinerja model usulan wajib menyertakan beberapa metrik evaluasi selain akurasi global (\textit{accuracy}) guna menghindari interpretasi bias. Metrik yang digunakan adalah:
+\begin{enumerate}
+  \item \textbf{Confusion Matrix}: Menyediakan visualisasi frekuensi prediksi \textit{True Positive} (TP), \textit{True Negative} (TN), \textit{False Positive} (FP), dan \textit{False Negative} (FN).
+  \item \textbf{Precision}: Mengukur ketepatan prediksi positif, dirumuskan sebagai $TP / (TP + FP)$.
+  \item \textbf{Recall (Sensitivity)}: Mengukur kemampuan mendeteksi kelas positif (Konjungtivitis), dirumuskan sebagai $TP / (TP + FN)$.
+  \item \textbf{F1-Score}: Rata-rata harmonik dari Precision dan Recall yang sangat representatif untuk data tidak seimbang, dirumuskan sebagai $2 \times \frac{Precision \times Recall}{Precision + Recall}$.
+  \item \textbf{AUC-ROC}: Area di bawah kurva karakteristik operasi penerima untuk menilai kemampuan pemisahan kelas.
+\end{enumerate}
+
+Skenario eksperimen dirancang dengan membandingkan model usulan terhadap beberapa baseline kontrol untuk membuktikan efektivitas masing-masing komponen. Rangkuman skenario eksperimen disajikan dalam Tabel \ref{tab:skenario-baseline}.
 
 \begin{table}[!ht]
 \centering
 \footnotesize
 \caption{Rangkuman Skenario Eksperimen dan Baseline}
 \label{tab:skenario-baseline}
-\begin{tabular}{|p{3cm}|p{4cm}|p{4cm}|}
+\begin{tabular}{|p{3cm}|p{4.5cm}|p{4.5cm}|}
 \hline
-\textbf{Parameter Evaluasi} & \textbf{Baseline (Kontrol)} & \textbf{Sistem Usulan} \\
+\textbf{Parameter Evaluasi} & \textbf{Model Baseline (Kontrol)} & \textbf{Sistem Usulan} \\
 \hline
-\textit{Time to First Command} (ms) & \textit{MicroVM Cold Start}: Menjalankan agen dengan MicroVM standar (\textit{fresh boot}). & \textit{MicroVM Snapshot Restore}: Memulihkan MicroVM dari kondisi \textit{pre-initialized}.\\
+\textit{Prapemrosesan Citra} & Citra mata utuh tanpa pemotongan (\textit{global classification}) dengan derau kelopak/bulu mata. & Segmentasi area sklera secara otomatis dilanjutkan dengan \textit{Vessel Enhancement} (CLAHE). \\
 \hline
-\textit{Accuracy} (\%) & \textit{Static/Reactive}: Tidak ada prediksi (0\% proactive). Mengandalkan instalasi saat jalan. & \textit{Context-Aware}: Memprediksi kebutuhan lingkungan sebelum eksekusi. \\
+\textit{Arsitektur CNN} & Model CNN standar tanpa mekanisme perhatian (\textit{attention}). & Model CNN dengan integrasi \textit{Spatial Attention Block} pada ujung \textit{backbone} ResNet50. \\
 \hline
-\textit{Task Done} (s) & \textit{Reactive Provisioning}: Waktu tugas ditambah waktu unduh dan instalasi alat. & \textit{Proactive Provisioning}: Hanya waktu tugas (Waktu instalasi $\approx$ 0). \\
+\textit{Metrik Evaluasi Utama} & Akurasi global saja. & \textit{F1-Score}, \textit{Precision}, \textit{Recall}, \textit{Confusion Matrix}, dan kurva AUC-ROC. \\
 \hline
-\textit{Storage} (MB) & \textit{Full MicroVM Snapshot}: Menyalin seluruh memori dan disk setiap sesi. & \textit{Incremental Snapshot}: Hanya menyimpan delta (\textit{Copy-on-Write}). \\
+\textit{Penanganan Imbalance} & Tanpa penanganan ketidakseimbangan data. & Augmentasi khusus kelas Konjungtivitis dan penerapan \textit{Class Weighting} pada \textit{loss function}. \\
 \hline
 \end{tabular}
 \end{table}
