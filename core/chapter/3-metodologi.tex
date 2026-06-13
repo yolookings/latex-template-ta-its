@@ -35,8 +35,10 @@ Untuk melatih dan menguji model secara adil, dataset dibagi menjadi data latih (
 \subsection{Segmentasi Sklera dan Fitur Vaskular}
 \label{subsec:segmentasi-sklera-vaskular}
 
-Proses prapemrosesan citra dilakukan untuk menghilangkan pengaruh derau non-okular dan mempertegas tanda-tanda inflamasi. Tahapan pemrosesan adalah sebagai berikut:
+Proses prapemrosesan citra dilakukan untuk menormalisasi pencahayaan, menghilangkan pantulan cahaya, mereduksi derau non-okular, serta mempertegas tanda-tanda inflamasi. Tahapan pemrosesan adalah sebagai berikut:
 \begin{enumerate}
+  \item \textbf{Normalisasi Histogram}: Menyeragamkan tingkat kecerahan dan kontras grayscale pada seluruh citra mata untuk mengompensasi variasi pencahayaan luar ruangan.
+  \item \textbf{Restorasi Glare (Pantulan Cahaya)}: Mengonversi citra ke ruang warna CIE LAB. Piksel dengan nilai kecerahan tinggi ($L > 220$) pada kanal L dideteksi sebagai \textit{glare} akibat air mata atau cahaya eksternal. Area ini disamarkan (\textit{inpainting}) menggunakan informasi piksel tetangga.
   \item \textbf{Segmentasi Sklera}: Area putih mata (sklera) diisolasi dengan mengonversi citra ke ruang warna HSV dan menerapkan ambang batas (\textit{color thresholding}) warna putih sklera. Derau kelopak mata, bulu mata, dan pupil dibuang menggunakan deteksi kontur dan operasi morfologi (\textit{opening} dan \textit{closing}), dilanjutkan dengan pemotongan (\textit{cropping}) area sklera.
   \item \textbf{Ekstraksi Fitur Vaskular}: Citra sklera yang telah terpotong dikonversi untuk memperkuat kanal merah pembuluh darah melalui formulasi indeks kemerahan. Selanjutnya, algoritma \textit{Contrast Limited Adaptive Histogram Equalization} (CLAHE) diterapkan untuk menonjolkan urat-urat merah pembuluh darah yang mengalami pembengkakan dengan meratakan kontras lokal secara adaptif.
 \end{enumerate}
