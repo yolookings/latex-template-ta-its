@@ -10,16 +10,16 @@ Demi mendukung penelitian ini, bab ini akan memaparkan hasil penelitian terdahul
 
 Beberapa penelitian terdahulu yang relevan dengan topik deteksi konjungtivitis menggunakan metode \textit{machine learning} dan \textit{deep learning} dirangkum dalam Tabel \ref{tab:penelitian-terdahulu}.
 
-\begin{longtable}{|c|p{5.5cm}|p{8cm}|}
+\begin{longtable}{|c|p{4.5cm}|p{8.5cm}|}
   \caption{Penelitian Terdahulu}\label{tab:penelitian-terdahulu} \\
   \hline
-  \textbf{No} & \textbf{Penelitian} & \textbf{Pembahasan} \\
+  \textbf{No} & \textbf{Penulis \& Tahun} & \textbf{Pembahasan} \\
   \hline
   \endfirsthead
   
   \multicolumn{3}{c}{\tablename\ \thetable\ -- \textit{Lanjutan dari halaman sebelumnya}} \\
   \hline
-  \textbf{No} & \textbf{Penelitian} & \textbf{Pembahasan} \\
+  \textbf{No} & \textbf{Penulis \& Tahun} & \textbf{Pembahasan} \\
   \hline
   \endhead
   
@@ -29,54 +29,34 @@ Beberapa penelitian terdahulu yang relevan dengan topik deteksi konjungtivitis m
   \hline
   \endlastfoot
   
-  1 & 
-  \textbf{Judul:} Automated Conjunctivitis Detection Using Xception Model with Transfer Learning \newline
-  \textbf{Penulis:} Syed Sofiya Ali dan Suman Kumar Swarnkar \newline
-  \textbf{Tahun:} 2025 \parencite{ali2025automated} & 
-  \textbf{Metode:} Xception CNN + Transfer Learning + Data Augmentation. \newline
-  \textbf{Hasil:} Akurasi pengujian 95,16\%, AUC-ROC 0,9484, precision 0,9773, recall 0,9412, F1-Score 0,9143. \newline
-  \textbf{Kelemahan:} Melakukan klasifikasi global pada seluruh citra mata tanpa segmentasi sklera, sehingga rentan terganggu oleh derau non-okular (kelopak/bulu mata). \newline
-  \textbf{Relevansi:} Membuktikan efektivitas arsitektur CNN dalam klasifikasi konjungtivitis. \\
+  1 & \multicolumn{2}{p{13.3cm}|}{\textit{Automated Conjunctivitis Detection Using Xception Model with Transfer Learning}} \\
+  \cline{2-3}
+    & Syed Sofiya Ali dan Suman Kumar Swarnkar, 2025 \parencite{ali2025automated} & 
+    Penelitian ini mengklasifikasi konjungtivitis biner menggunakan model Xception CNN standar dan transfer learning yang dilatih pada 582 citra mata. Model dilatih dalam dua tahap (pembekuan lapisan dan fine-tuning) dengan augmentasi citra RGB standar. Model mencapai akurasi pengujian sebesar 95,16\%, AUC-ROC 0,9484, precision 0,9773, recall 0,9412, dan F1-Score 0,9143. Kelemahannya adalah klasifikasi dilakukan secara global pada seluruh citra mata tanpa segmentasi sklera, sehingga rentan terganggu oleh derau non-okular (kelopak/bulu mata). \\
   \hline
 
-  2 & 
-  \textbf{Judul:} Enhanced Conjunctivitis Detection: Leveraging ResNet and Spatial Attention Mechanisms for Superior Accuracy \newline
-  \textbf{Penulis:} S. N. Sangeethaa dkk. \newline
-  \textbf{Tahun:} 2024 \parencite{sangeethaa2024enhanced} & 
-  \textbf{Metode:} ResNet + Spatial Attention Mechanism. \newline
-  \textbf{Hasil:} Akurasi model 92,5\%, sensitivitas 90,7\%, spesifisitas 94,3\%, F1-Score 0,92. \newline
-  \textbf{Kelemahan:} Belum mengintegrasikan prapemrosesan segmentasi/lokalisasi untuk menghilangkan derau di sekitar area mata. \newline
-  \textbf{Relevansi:} Membuktikan bahwa penambahan blok Spatial Attention pada arsitektur ResNet dapat memfokuskan ekstraksi fitur dan meningkatkan akurasi dari 88,3\% ke 92,5\%. \\
+  2 & \multicolumn{2}{p{13.3cm}|}{\textit{Enhanced Conjunctivitis Detection: Leveraging ResNet and Spatial Attention Mechanisms for Superior Accuracy}} \\
+  \cline{2-3}
+    & S. N. Sangeethaa dkk., 2024 \parencite{sangeethaa2024enhanced} & 
+    Penelitian ini mengusulkan metode deteksi konjungtivitis berbasis arsitektur ResNet dengan integrasi Spatial Attention Mechanism. Diuji pada dataset berisi 358 citra mata (181 sehat dan 177 sakit), model memperoleh akurasi sebesar 92,5\%, sensitivitas 90,7\%, spesifisitas 94,3\%, dan F1-Score 0,92. Kelemahannya adalah belum mengintegrasikan prapemrosesan segmentasi atau lokalisasi untuk membuang derau non-okular di sekitar area mata. \\
   \hline
 
-  3 & 
-  \textbf{Judul:} Automatic diagnosis of keratitis using object localization combined with cost-sensitive deep attention convolutional neural network \newline
-  \textbf{Penulis:} Jiewei Jiang dkk. \newline
-  \textbf{Tahun:} 2023 \parencite{jiang2023automatic} & 
-  \textbf{Metode:} SSD Object Localization (memotong area kornea-konjungtiva) + Cost-Sensitive Deep Attention CNN (CDACNN). \newline
-  \textbf{Hasil:} AUC internal 0,998 (keratitis), 0,997 (abnormalitas kornea), 1,000 (normal). \newline
-  \textbf{Kelemahan:} Fokus pada deteksi keratitis area kornea dan membutuhkan anotasi koordinat kotak pembatas (\textit{bounding box}) yang padat. \newline
-  \textbf{Relevansi:} Membuktikan bahwa lokalisasi objek sebelum klasifikasi sangat efektif menghilangkan pengaruh derau bulu/kelopak mata. \\
+  3 & \multicolumn{2}{p{13.3cm}|}{\textit{Automatic diagnosis of keratitis using object localization combined with cost-sensitive deep attention convolutional neural network}} \\
+  \cline{2-3}
+    & Jiewei Jiang dkk., 2023 \parencite{jiang2023automatic} & 
+    Penelitian ini mengusulkan kombinasi lokalisasi objek Single Shot Multibox Detector (SSD) untuk memotong area kornea-konjungtiva (Conj\_Cor) dan pengklasifikasi Cost-Sensitive Deep Attention CNN (CDACNN). Diuji pada 12.407 citra slit-lamp, model ini mencapai AUC hingga 0,998. Kelemahannya adalah model difokuskan pada keratitis kornea dan membutuhkan anotasi koordinat kotak pembatas yang rumit. Namun, lokalisasi objek ini sangat efektif menghilangkan derau kelopak mata. \\
   \hline
 
-  4 & 
-  \textbf{Judul:} A Deep Learning-Based Segmentation Technique for Automatic Detection of Conjunctivitis from Conjunctival Eye Images \newline
-  \textbf{Penulis:} S. Madhusudhan dan S. Anitha \newline
-  \textbf{Tahun:} 2026 \parencite{madhusudhan2026deep} & 
-  \textbf{Metode:} Attention-U-Net++ (segmentasi sklera) + Swin/ViT Transformer + CLAHE + Ekstraksi Indeks Vaskular (densitas \& kemerahan). \newline
-  \textbf{Hasil:} Akurasi segmentasi 90,3\%, sensitivitas 0,87, spesifisitas 0,93, F1-Score 0,89, AUC 0,96. \newline
-  \textbf{Kelemahan:} Kompleksitas komputasi model sangat tinggi karena penggabungan CNN dan Transformer global. \newline
-  \textbf{Relevansi:} Mendukung ide penonjolan fitur vaskular menggunakan CLAHE dan formulasi indeks kemerahan di area sklera. \\
+  4 & \multicolumn{2}{p{13.3cm}|}{\textit{A Deep Learning-Based Segmentation Technique for Automatic Detection of Conjunctivitis from Conjunctival Eye Images}} \\
+  \cline{2-3}
+    & S. Madhusudhan dan S. Anitha, 2026 \parencite{madhusudhan2026deep} & 
+    Penelitian ini menggunakan segmentasi Attention-U-Net++ dipadukan dengan Swin/ViT Transformer untuk deteksi otomatis konjungtivitis berdasarkan fitur densitas pembuluh darah (vessel density index) dan indeks kemerahan sklera. Model mencapai akurasi segmentasi 90,3\%, spesifisitas 0,93, dan F1-Score 0,89 pada dataset citra mata. Kelemahannya adalah kompleksitas model komputasi yang tinggi karena penggabungan CNN dan Transformer. \\
   \hline
 
-  5 & 
-  \textbf{Judul:} Illumination-Robust Conjunctival Image Preprocessing for Accurate Segmentation and Anemia Detection Using Deep Learning \newline
-  \textbf{Penulis:} Jose Humberto Fuentes-Beingolea dkk. \newline
-  \textbf{Tahun:} 2025 \parencite{fuentes2025illumination} & 
-  \textbf{Metode:} Normalisasi Histogram Grayscale + Glare Inpainting berbasis LAB color space + CLAHE + Segmentasi (U-Net, BiSeNet, ConjunctiveNet) + Klasifikasi (ANN, ResNet, SLIC-GAT). \newline
-  \textbf{Hasil:} Meningkatkan presisi U-Net dari 80,08\% ke 84,22\%, serta F1-Score klasifikasi CNN-ResNet dari 81,91\% ke 89,15\% pada dataset outdoor. \newline
-  \textbf{Kelemahan:} Penerapan inpainting glare yang terlalu luas berpotensi menghilangkan informasi pembuluh darah asli di bawahnya. \newline
-  \textbf{Relevansi:} Menginspirasi teknik perbaikan pencahayaan dan restorasi pantulan cahaya (\textit{glare}) pada area sklera. \\
+  5 & \multicolumn{2}{p{13.3cm}|}{\textit{Illumination-Robust Conjunctival Image Preprocessing for Accurate Segmentation and Anemia Detection Using Deep Learning}} \\
+  \cline{2-3}
+    & Jose Humberto Fuentes-Beingolea dkk., 2025 \parencite{fuentes2025illumination} & 
+    Penelitian ini merancang pipeline prapemrosesan citra kebal cahaya (normalisasi histogram, inpainting glare berbasis ruang warna LAB, dan CLAHE) untuk deteksi anemia non-invasif pada konjungtiva mata. Dengan preprocessing tersebut, presisi segmentasi U-Net naik dari 80,08\% menjadi 84,22\%, dan F1-Score klasifikasi CNN-ResNet naik dari 81,91\% menjadi 89,15\% pada kondisi pencahayaan liar. Kelemahannya adalah inpainting glare yang terlalu luas dapat mengaburkan detail pembuluh darah asli di bawahnya. \\
   \hline
 
 \end{longtable}
@@ -91,6 +71,8 @@ Berdasarkan hasil pembandingan di atas, posisi penelitian yang diusulkan adalah 
 
 Anatomi anterior mata yang menjadi fokus dalam deteksi konjungtivitis terdiri atas dua struktur utama: sklera dan konjungtiva. Sklera merupakan dinding luar bola mata yang berwarna putih, keras, pelindung bagian dalam mata. Di atas sklera terdapat konjungtiva bulbi, yaitu membran mukosa tipis dan transparan. Ketika mata terinfeksi konjungtivitis, terjadi reaksi imun berupa dilatasi pembuluh darah mikro pada konjungtiva bulbi (\textit{vasodilatasi} atau hiperemia/mata merah). Visualisasi kemerahan dan pelebaran vaskular ini paling jelas terlihat di atas latar belakang putih sklera. Oleh karena itu, area sklera merupakan wilayah kritis (\textit{region of interest}) yang memuat fitur paling representatif untuk deteksi.
 
+Pada penelitian kali ini, teori ini digunakan untuk mengidentifikasi batasan area anatomis bola mata yang akan dianalisis, yaitu sklera anterior yang dilapisi konjungtiva bulbi sebagai wilayah kritis (\textit{region of interest}) utama untuk mendeteksi tanda-tanda kemerahan dan pembengkakan pembuluh darah akibat penyakit konjungtivitis pada penelitian ini.
+
 \subsection{Prapemrosesan Citra Kebal Cahaya (Illumination-Robust Preprocessing)}
 \label{subsec:prapemrosesan-citra}
 
@@ -102,15 +84,21 @@ Variabilitas pencahayaan luar ruangan menimbulkan tantangan berat berupa ketidak
   \item \textbf{Contrast Limited Adaptive Histogram Equalization (CLAHE)}: CLAHE digunakan untuk menonjolkan garis-garis pembuluh darah (\textit{vessel structure}) di sklera dengan membatasi peningkatan kontras lokal, sehingga derau latar belakang tidak ikut diperkuat secara berlebihan.
 \end{enumerate}
 
+Pada penelitian kali ini, teori ini digunakan untuk menormalisasi variasi kecerahan gambar, meminimalkan pengaruh \textit{noise} akibat pantulan cahaya luar ruangan melalui inpainting, serta memperjelas tampilan garis-garis pembuluh darah pada permukaan sklera sebelum citra diumpankan ke model pembelajaran mendalam pada penelitian ini.
+
 \subsection{Lokalisasi dan Segmentasi Semantik Sklera}
 \label{subsec:segmentasi-sklera}
 
 Deteksi konjungtivitis global rentan terhadap bias visual dari struktur non-okular (seperti kelopak mata, bulu mata, dan kulit). Oleh karena itu, segmentasi semantik (menggunakan model seperti U-Net atau metode morfologi berbasis ruang warna) diterapkan untuk mengisolasi area sklera secara presisi dan menghasilkan masker biner sklera. Piksel mata di luar masker sklera diatur menjadi nol (\textit{blackout}), sehingga model CNN klasifikasi hanya menerima masukan informasi pembuluh darah sklera yang bersih.
 
+Pada penelitian kali ini, teori ini digunakan untuk memotong dan mengisolasi objek sklera dari bagian non-okular di sekitarnya sehingga model klasifikasi hanya berfokus menganalisis citra sklera bersih tanpa terganggu oleh derau eksternal pada penelitian ini.
+
 \subsection{Arsitektur CNN dengan Mekanisme Attention}
 \label{subsec:arsitektur-attention-cnn}
 
 Ekstraksi fitur klasifikasi menggunakan jaringan saraf konvolusi (\textit{Convolutional Neural Network}) berbasis arsitektur \textit{Residual Network} (ResNet). ResNet menggunakan \textit{skip connection} untuk mencegah masalah \textit{vanishing gradient} pada model yang dalam. Untuk memfokuskan ekstraksi pada lesi pembuluh darah merah yang meradang, model dilengkapi dengan \textit{Spatial Attention Block} dan \textit{Channel Attention Block}. \textit{Spatial attention} merumuskan letak spasial pembuluh darah yang menonjol di atas sklera, sedangkan \textit{channel attention} menyeleksi saluran fitur warna merah yang paling dominan. Penggabungan ini menghasilkan pembobotan fitur yang dinamis dan sangat akurat.
+
+Pada penelitian kali ini, teori ini digunakan untuk menyusun arsitektur ekstraksi fitur dan klasifikasi berbasis \textit{deep learning} yang mampu memusatkan fokus pembelajaran bobot pikselnya secara dinamis pada urat-urat pembuluh darah yang mengalami inflamasi pada penelitian ini.
 
 \subsection{Penanganan Ketidakseimbangan Data (Imbalanced Learning)}
 \label{subsec:penanganan-data-imbalanced}
@@ -120,3 +108,5 @@ Distribusi dataset medis yang pincang diatasi melalui dua metode:
   \item \textbf{Data Augmentation}: Melakukan manipulasi geometris (rotasi acak, pembalikan horizontal/vertikal, penyesuaian kecerahan) khusus pada sampel kelas minoritas (Konjungtivitis) saat pelatihan agar model mempelajari variasi fitur secara seimbang.
   \item \textbf{Class Weighting / Cost-Sensitive Learning}: Memodifikasi fungsi kerugian (\textit{loss function}) dengan memberikan penalti kesalahan prediksi yang lebih berat pada kelas minoritas, sehingga memaksa model lebih berhati-hati dalam mengklasifikasikan kelas Konjungtivitis.
 \end{enumerate}
+
+Pada penelitian kali ini, teori ini digunakan untuk melatih model klasifikasi secara adil agar terhindar dari bias prediksi kelas mayoritas (Normal) dengan cara menyeimbangkan jumlah sampel latih secara artifisial dan memberikan penalti kerugian yang proporsional pada penelitian ini.
