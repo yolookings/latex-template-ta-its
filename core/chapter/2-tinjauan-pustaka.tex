@@ -66,39 +66,75 @@ Berdasarkan hasil pembandingan di atas, posisi penelitian yang diusulkan adalah 
 \section{Dasar Teori}
 \label{sec:dasar-teori}
 
-\subsection{Anatomi Anterior Mata (Sklera dan Konjungtiva)}
-\label{subsec:anatomi-mata}
+\subsection{Konjungtiva}
+\label{subsec:konjungtiva}
 
-Lapisan terluar (eksternal) bola mata manusia tersusun atas sklera di bagian posterior dan kornea di bagian anterior \parencite{wandini2024konjungtivitis}. Sklera merupakan dinding penyokong bola mata yang kuat, berwarna putih, dan terbuat dari jaringan fibrosa rapat yang berfungsi melindungi struktur internal mata. Melapisi permukaan anterior sklera serta bagian posterior palpebra terdapat konjungtiva, yang didefinisikan sebagai membran mukosa tipis dan transparan \parencite{sitompul2017konjungtivitis}. Konjungtiva secara anatomis terbagi menjadi tiga area utama: konjungtiva palpebralis (melapisi kelopak mata bagian dalam), konjungtiva bulbi (melapisi sklera anterior), dan konjungtiva forniks (lapisan transisi di sudut kelopak mata) \parencite{wandini2024konjungtivitis}.
+Konjungtiva didefinisikan sebagai membran mukosa tipis, transparan, dan lunak yang melapisi bagian posterior palpebra (konjungtiva palpebralis), melipat ke area transisi forniks (konjungtiva forniks), dan menutupi bagian anterior sklera (konjungtiva bulbi) \parencite{wandini2024konjungtivitis}. Sebagai komponen pertahanan terdepan bola mata, jaringan konjungtiva rentan mengalami inflamasi atau konjungtivitis yang dipicu oleh invasi bakteri, virus, reaksi hipersensitivitas alergi, maupun paparan toksin \parencite{sitompul2017konjungtivitis, fhadila2023identifikasi, ramadirta2023konjungtivitis}. Inflamasi ini ditandai dengan pembengkakan jaringan, eksudasi, dan dilatasi vaskular (hiperemia/mata merah) \parencite{sitompul2017konjungtivitis, fhadila2023identifikasi}. Karena konjungtiva bulbi bersifat transparan dan melekat secara longgar di atas sklera anterior, visualisasi hiperemia pembuluh darah merah ini tampak sangat kontras di atas warna dasar putih sklera \parencite{wandini2024konjungtivitis}.
 
-Secara klinis, peradangan pada konjungtiva disebut konjungtivitis, yang diakibatkan oleh reaksi hipersensitivitas maupun infeksi patogen \parencite{ramadirta2023konjungtivitis, fhadila2023identifikasi}. Kondisi ini ditandai dengan pembengkakan jaringan, eksudasi, dan dilatasi vaskular (hiperemia/mata merah) \parencite{fhadila2023identifikasi, sitompul2017konjungtivitis}. Pelebaran pembuluh darah mikro pada konjungtiva bulbi ini paling jelas terlihat di atas latar belakang putih sklera \parencite{wandini2024konjungtivitis}. Oleh karena itu, analisis intensitas pembuluh darah di atas sklera anterior menjadi parameter kritis untuk mendeteksi konjungtivitis secara non-invasif \parencite{ramadirta2023konjungtivitis}.
+Pada penelitian kali ini, teori ini digunakan untuk memahami dasar klinis dan patofisiologi gejala hiperemia pembuluh darah akibat inflamasi konjungtivitis pada permukaan bola mata pada penelitian ini.
 
-Pada penelitian kali ini, teori ini digunakan untuk mengidentifikasi batasan area anatomis bola mata yang akan dianalisis, yaitu sklera anterior yang dilapisi konjungtiva bulbi sebagai wilayah kritis (\textit{region of interest}) utama untuk mendeteksi tanda-tanda kemerahan dan pembengkakan pembuluh darah akibat penyakit konjungtivitis pada penelitian ini.
-
-\subsection{Prapemrosesan Citra Kebal Cahaya (Illumination-Robust Preprocessing)}
-\label{subsec:prapemrosesan-citra}
-
-Kualitas citra okular di luar ruangan seringkali terdegradasi oleh variabilitas cahaya alami dan efek kilap atau pantulan cahaya (\textit{glare}) \parencite{fuentes2025illumination}. Prapemrosesan citra yang kebal terhadap variasi cahaya dikembangkan untuk menstabilkan kontras pembuluh darah pada selaput mata \parencite{madhusudhan2026deep}. Tahapan yang direkomendasikan adalah melakukan normalisasi histogram grayscale untuk menyeragamkan distribusi intensitas cahaya (\textit{luminance}) di seluruh dataset \parencite{fuentes2025illumination}. Selanjutnya, konversi ke ruang warna CIE LAB mempermudah pendeteksian pantulan cahaya pada permukaan mata yang basah. Refleksi cahaya diidentifikasi melalui ambang batas tinggi pada saluran L (\textit{luminance}) dengan nilai $L > 220$ \parencite{fuentes2025illumination}. Piksel yang terdeteksi kemudian direstorasi menggunakan algoritma \textit{inpainting} berbasis piksel sekitar untuk menghindari hasil klasifikasi palsu \parencite{madhusudhan2026deep, fuentes2025illumination}. Terakhir, Contrast Limited Adaptive Histogram Equalization (CLAHE) diterapkan untuk mempertajam garis-garis halus pembuluh darah vaskular sklera dengan membatasi kontras lokal agar noise latar belakang tidak diperkuat secara berlebihan \parencite{madhusudhan2026deep}.
-
-Pada penelitian kali ini, teori ini digunakan untuk menormalisasi variasi kecerahan gambar, meminimalkan pengaruh \textit{noise} akibat pantulan cahaya luar ruangan melalui inpainting, serta memperjelas tampilan garis-garis pembuluh darah pada permukaan sklera sebelum citra diumpankan ke model pembelajaran mendalam pada penelitian ini.
-
-\subsection{Lokalisasi dan Segmentasi Semantik Sklera}
+\subsection{Segmentasi Sklera}
 \label{subsec:segmentasi-sklera}
 
-Analisis klasifikasi otomatis pada citra mata utuh rentan terhadap kegagalan klasifikasi karena model cenderung memusatkan perhatian pada bagian kelopak, bulu mata, dan kulit di sekitar mata \parencite{sangeethaa2024enhanced, jiang2023automatic}. Untuk mengatasi masalah tersebut, metode lokalisasi objek (seperti SSD) atau segmentasi semantik (seperti U-Net atau U-Net++) digunakan untuk memotong dan mengisolasi objek sklera dari daerah sekitarnya secara otomatis \parencite{jiang2023automatic, madhusudhan2026deep}. Segmentasi semantik menghasilkan masker biner sklera yang memisahkan sklera dari struktur non-okular lainnya \parencite{fuentes2025illumination}. Melalui perkalian elemen-demi-elemen (\textit{element-wise multiplication}), piksel di luar masker sklera diatur menjadi nol (\textit{blackout}), sehingga menghasilkan citra sklera murni yang bersih dari derau bulu mata maupun kelopak mata \parencite{madhusudhan2026deep, fuentes2025illumination}.
+Analisis klasifikasi otomatis langsung pada citra mata utuh seringkali mengalami kegagalan karena jaringan non-okular di sekitar mata (seperti kelopak mata, bulu mata, pupil, dan kulit wajah) bertindak sebagai derau (\textit{noise}) yang mengganggu fokus pembelajaran model \parencite{sangeethaa2024enhanced, jiang2023automatic}. Untuk mengatasi kelemahan tersebut, segmentasi sklera dikembangkan untuk mengisolasi area putih mata (sklera) secara otomatis dan memisahkannya dari struktur non-okular \parencite{madhusudhan2026deep}. Segmentasi semantik menggunakan arsitektur jaringan konvolusi (seperti U-Net atau U-Net++) terbukti handal untuk melokalisasi koordinat piksel sklera dari gambar anterior mata \parencite{madhusudhan2026deep, fuentes2025illumination}. Dengan menerapkan operasi morfologi serta masker biner sklera hasil segmentasi, piksel di luar area sklera diatur menjadi bernilai nol (\textit{blackout}), sehingga menghasilkan citra masukan bersih yang hanya memuat area sklera yang representatif \parencite{fuentes2025illumination}.
 
 Pada penelitian kali ini, teori ini digunakan untuk memotong dan mengisolasi objek sklera dari bagian non-okular di sekitarnya sehingga model klasifikasi hanya berfokus menganalisis citra sklera bersih tanpa terganggu oleh derau eksternal pada penelitian ini.
 
-\subsection{Arsitektur CNN dengan Mekanisme Attention}
-\label{subsec:arsitektur-attention-cnn}
+\subsection{Fitur Vaskular}
+\label{subsec:fitur-vaskular}
 
-Ekstraksi fitur representatif dari citra sklera yang telah disegmentasi dilakukan menggunakan jaringan saraf konvolusi (\textit{Convolutional Neural Network}) seperti ResNet atau Xception \parencite{sangeethaa2024enhanced, ali2025automated}. Jaringan \textit{deep learning} yang dalam seringkali mengalami penurunan gradien (\textit{vanishing gradient}), yang diatasi pada arsitektur ResNet menggunakan koneksi lewati (\textit{shortcut connections}) untuk mentransfer informasi secara langsung \parencite{sangeethaa2024enhanced}. Lebih lanjut, integrasi mekanisme perhatian spasial (\textit{spatial attention}) memaksa model untuk memfokuskan pembobotan nilai pikselnya hanya pada area pembuluh darah merah yang mengalami peradangan dan mengabaikan bagian sklera putih yang normal \parencite{sangeethaa2024enhanced, jiang2023automatic}. Peta perhatian (\textit{attention map}) spasial dihitung melalui pemadatan fitur saluran (rata-rata dan maksimum) diikuti dengan operasi konvolusi berukuran $7 \times 7$ dan aktivasi sigmoid untuk memberikan bobot relevansi spasial pada setiap piksel peta fitur \parencite{sangeethaa2024enhanced, jiang2023automatic}.
+Fitur vaskular merujuk pada bentuk geometri, pola percabangan, serta tingkat kepadatan pembuluh darah merah (\textit{vessel congestion}) yang melintasi permukaan sklera anterior \parencite{madhusudhan2026deep}. Pembuluh darah ini sangat sensitif terhadap variasi pencahayaan luar ruangan serta kilau pantulan air mata (\textit{glare}) \parencite{fuentes2025illumination}. Prapemrosesan citra kebal cahaya diterapkan dengan mendeteksi pantulan cahaya pada ruang warna CIE LAB untuk dihilangkan melalui algoritma \textit{inpainting} \parencite{fuentes2025illumination}. Selanjutnya, Contrast Limited Adaptive Histogram Equalization (CLAHE) digunakan untuk menonjolkan urat-urat merah pembuluh darah dengan membatasi kontras lokal agar noise latar belakang tidak diperkuat secara berlebihan \parencite{madhusudhan2026deep}. 
 
-Pada penelitian kali ini, teori ini digunakan untuk menyusun arsitektur ekstraksi fitur dan klasifikasi berbasis \textit{deep learning} yang mampu memusatkan fokus pembelajaran bobot pikselnya secara dinamis pada urat-urat pembuluh darah yang mengalami inflamasi pada penelitian ini.
+Pengukuran keparahan dilatasi pembuluh darah ini dirumuskan melalui indeks kemerahan pembuluh darah (\textit{Redness Index}) dan indeks kepadatan pembuluh darah (\textit{Vessel Density Index}). Indeks kemerahan dihitung berdasarkan rasio intensitas saluran warna merah terhadap saluran warna lainnya pada ruang warna RGB atau LAB \parencite{madhusudhan2026deep}. Secara umum, \textit{Redness Index} ($RI$) pada piksel ke-$i$ dirumuskan pada Persamaan \ref{eq:redness-index}:
+\begin{equation}
+  \label{eq:redness-index}
+  RI_i = \frac{R_i}{R_i + G_i + B_i}
+\end{equation}
+di mana $R_i$, $G_i$, dan $B_i$ masing-masing menyatakan nilai intensitas saluran warna merah, hijau, dan biru pada piksel tersebut \parencite{madhusudhan2026deep}. Sedangkan \textit{Vessel Density Index} ($VDI$) dihitung sebagai rasio luas area piksel pembuluh darah hasil segmentasi terhadap luas total area sklera \parencite{fuentes2025illumination}.
 
-\subsection{Penanganan Ketidakseimbangan Data (Imbalanced Learning)}
-\label{subsec:penanganan-data-imbalanced}
+Pada penelitian kali ini, teori ini digunakan untuk menormalisasi variasi kecerahan gambar, meminimalkan pengaruh pantulan cahaya, serta mengekstraksi dan memperjelas pola garis-garis pembuluh darah sklera yang mengalami inflamasi pada penelitian ini.
 
-Masalah ketidakseimbangan kelas (\textit{class imbalance}) sangat umum dijumpai pada pengumpulan dataset klinis, di mana jumlah sampel konjungtivitis jauh lebih sedikit dibanding sampel normal \parencite{ali2025investigating, jiang2023automatic}. Klasifikasi konvensional yang dilatih pada data timpang cenderung memiliki keputusan klasifikasi yang bias ke kelas mayoritas \parencite{jiang2023automatic}. Metode \textit{Data Augmentation} (seperti rotasi acak, pergeseran lebar/tinggi, dan variasi kecerahan) diaplikasikan secara khusus pada kelas minoritas untuk menyeimbangkan sebaran data latih secara sintetis \parencite{ali2025automated, fuentes2025illumination}. Selain itu, pendekatan \textit{Class Weighting} atau \textit{Cost-Sensitive Learning} memodifikasi fungsi kerugian (seperti \textit{Binary Cross-Entropy}) dengan memberikan penalti kesalahan klasifikasi yang lebih tinggi pada sampel kelas konjungtivitis, sehingga model dipaksa lebih sensitif terhadap gejala inflamasi minoritas \parencite{jiang2023automatic, ali2025investigating}.
+\subsection{Attention Mechanism CNN}
+\label{subsec:attention-mechanism-cnn}
 
-Pada penelitian kali ini, teori ini digunakan untuk melatih model klasifikasi secara adil agar terhindar dari bias prediksi kelas mayoritas (Normal) dengan cara menyeimbangkan jumlah sampel latih secara artifisial dan memberikan penalti kerugian yang proporsional pada penelitian ini.
+\textit{Convolutional Neural Network} (CNN) adalah arsitektur \textit{deep learning} yang sangat efektif untuk mengekstrak fitur hierarkis dari citra okular \parencite{ali2025automated}. Jaringan CNN yang dalam seperti ResNet menggunakan \textit{skip connection} untuk memintas lapisan konvolusi dan melatih bobot model tanpa mengalami degradasi gradien \parencite{sangeethaa2024enhanced}. Untuk meningkatkan ketepatan deteksi, arsitektur CNN diintegrasikan dengan mekanisme perhatian (\textit{attention mechanism}) \parencite{sangeethaa2024enhanced, jiang2023automatic}.
+
+Secara matematis, \textit{Spatial Attention} ($\mathbf{M}_s$) yang diintegrasikan pada arsitektur CNN dihitung berdasarkan operasi penggabungan (\textit{concatenation}) rata-rata fitur dan nilai maksimum fitur sepanjang dimensi saluran warna (dimensi \textit{channel}), kemudian diikuti oleh operasi konvolusi dengan filter berukuran $7 \times 7$ dan fungsi aktivasi sigmoid. Hal ini dirumuskan pada Persamaan \ref{eq:spatial-attention}:
+\begin{equation}
+  \label{eq:spatial-attention}
+  \mathbf{M}_s(\mathbf{F}) = \sigma\left(f^{7 \times 7}\left(\left[\text{AvgPool}(\mathbf{F}); \text{MaxPool}(\mathbf{F})\right]\right)\right)
+\end{equation}
+di mana $\mathbf{F}$ menyatakan peta fitur masukan dari lapisan konvolusi, $\text{AvgPool}(\mathbf{F})$ menyatakan rata-rata fitur sepanjang dimensi saluran, $\text{MaxPool}(\mathbf{F})$ menyatakan nilai maksimum fitur sepanjang dimensi saluran, $[\cdot ; \cdot]$ menyatakan operasi penggabungan (\textit{concatenation}), $f^{7 \times 7}$ menyatakan operasi konvolusi dengan ukuran filter $7 \times 7$, dan $\sigma$ menyatakan fungsi aktivasi sigmoid \parencite{sangeethaa2024enhanced, jiang2023automatic}. Peta perhatian $\mathbf{M}_s(\mathbf{F})$ ini kemudian dikalikan secara spasial (\textit{element-wise multiplication}) dengan peta fitur asal $\mathbf{F}$ untuk menghasilkan representasi fitur yang telah terbobot secara dinamis \parencite{sangeethaa2024enhanced}.
+
+Pada penelitian kali ini, teori ini digunakan untuk merancang arsitektur model klasifikasi berbasis ResNet yang diperkuat dengan blok perhatian spasial dan saluran guna mengekstrak fitur vaskular terinfeksi secara adaptif pada penelitian ini.
+
+\subsection{Metrik Evaluasi}
+\label{subsec:metrik-evaluasi}
+
+Pengukuran kinerja model klasifikasi bertujuan untuk menguji kemampuan generalisasi arsitektur usulan pada data uji independen \parencite{ali2025investigating}. Mengingat dataset medis yang digunakan memiliki karakteristik sangat timpang (\textit{class imbalance}), penggunaan metrik evaluasi tunggal seperti akurasi (\textit{accuracy}) dapat menyesatkan karena cenderung mencerminkan kelas mayoritas \parencite{ali2025investigating, jiang2023automatic}. Oleh karena itu, evaluasi model wajib menggunakan kombinasi metrik yang meliputi \textit{Confusion Matrix}, akurasi (\textit{accuracy}), presisi (\textit{precision}), sensitivitas (\textit{recall}), dan rata-rata harmonik keduanya (\textit{F1-Score}) \parencite{ali2025automated, fuentes2025illumination}.
+
+Secara matematis, metrik-metrik evaluasi tersebut didefinisikan berdasarkan nilai \textit{True Positive} ($TP$), \textit{True Negative} ($TN$), \textit{False Positive} ($FP$), dan \textit{False Negative} ($FN$). Akurasi merepresentasikan persentase kecocokan prediksi model terhadap seluruh data aktual, yang dirumuskan pada Persamaan \ref{eq:akurasi}:
+\begin{equation}
+  \label{eq:akurasi}
+  \text{Akurasi} = \frac{TP + TN}{TP + TN + FP + FN}
+\end{equation}
+
+Presisi menunjukkan kemampuan model dalam meminimalkan kesalahan prediksi positif palsu (\textit{false alarm}), yang dirumuskan pada Persamaan \ref{eq:presisi}:
+\begin{equation}
+  \label{eq:presisi}
+  \text{Presisi} = \frac{TP}{TP + FP}
+\end{equation}
+
+Sensitivitas (\textit{recall}) menunjukkan kemampuan model dalam mengenali kembali seluruh kasus positif aktual tanpa terlewat, yang dirumuskan pada Persamaan \ref{eq:recall}:
+\begin{equation}
+  \label{eq:recall}
+  \text{Recall} = \frac{TP}{TP + FN}
+\end{equation}
+
+Sedangkan \textit{F1-Score} merupakan rata-rata harmonik antara presisi dan \textit{recall} untuk menguji performa model secara seimbang pada data timpang, yang dirumuskan pada Persamaan \ref{eq:f1score}:
+\begin{equation}
+  \label{eq:f1score}
+  \text{F1-Score} = 2 \times \frac{\text{Presisi} \times \text{Recall}}{\text{Presisi} + \text{Recall}}
+\end{equation}
+
+Pada penelitian kali ini, teori ini digunakan untuk memvalidasi dan mengukur kinerja klasifikasi model usulan dalam membedakan mata Normal dan Konjungtivitis secara akurat dan objektif pada penelitian ini.
